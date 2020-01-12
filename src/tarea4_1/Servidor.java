@@ -12,21 +12,10 @@ import java.util.logging.Logger;
  *
  * @author Jesús Alvarez<jjalvarezgar@gmail.com>
  */
-public class Servidor extends javax.swing.JFrame implements Runnable {
+public class Servidor extends javax.swing.JFrame {
 
     static int numero = 0;
     String numer_string;
-
-    public Servidor() {
-
-        Thread hilo = new Thread(this);
-//        Thread hilo2 = new Thread(this);
-
-        hilo.start();
-//        hilo2.start();
-        initComponents();
-
-    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -81,9 +70,14 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException {
 
         numero = (int) (Math.random() * 100 + 1);
+        System.out.println(numero);
+        
+        ServerSocket Ss;
+        Ss = new ServerSocket(1500);
+        
 
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -124,48 +118,8 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
     private javax.swing.JTextField tfServidor;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void run() {
 
-        System.out.println(numero);
 
-        while (true) {
-
-            try {
-                ServerSocket Ssocket = new ServerSocket(2000);
-                while (true) {
-
-                    Socket misocket = Ssocket.accept();
-                    DataInputStream dis = new DataInputStream(misocket.getInputStream());
-                    DataOutputStream dos = new DataOutputStream(misocket.getOutputStream());
-                    String mensaje = dis.readUTF();
-                    int mensajeAEntero = Integer.parseInt(mensaje);
-
-                    if (numero == mensajeAEntero) {
-                        tfServidor.setText("felicidades has acertado!!!");
-                        String mensajeDeSalida = "felicidades has acertado!!!";
-                        dos.writeUTF(mensajeDeSalida);
-                        misocket.close();
-
-                    } else if (numero < mensajeAEntero) {
-
-                        String mensajeDeSalida = "No has acertado el numero es MENOR";
-                        dos.writeUTF(mensajeDeSalida);
-                        tfServidor.setText("No es el número, prueba de nuevo...");
-                        Ssocket.close();
-
-                    } else if (numero > mensajeAEntero) {
-
-                        String mensajeDeSalida = "No has acertado el numero es MAYOR";
-                        dos.writeUTF(mensajeDeSalida);
-                        tfServidor.setText("No es el número, prueba de nuevo...");
-                        Ssocket.close();
-
-                    }
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
+    
+    
 }
