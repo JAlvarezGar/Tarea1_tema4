@@ -1,7 +1,5 @@
 package tarea4_1;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -16,6 +14,11 @@ public class Servidor extends javax.swing.JFrame {
 
     static int numero = 0;
     String numer_string;
+
+    public Servidor() {
+
+        initComponents();
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -72,12 +75,27 @@ public class Servidor extends javax.swing.JFrame {
      */
     public static void main(String args[]) throws IOException {
 
+//        new Servidor().setVisible(true);
+
         numero = (int) (Math.random() * 100 + 1);
         System.out.println(numero);
-        
+
         ServerSocket Ss;
         Ss = new ServerSocket(1500);
-        
+        try {
+
+            int idSession = 0;
+            while (true) {
+                Socket socket;
+                socket = Ss.accept();
+                System.out.println("Nueva conexión entrante: " + socket);
+                 new ServidorHilo(socket, idSession).start();
+                idSession++;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
 
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -91,15 +109,15 @@ public class Servidor extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Servidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Servidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Servidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Servidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException |
+                IllegalAccessException |
+                javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Servidor.class.getName()).
+                    log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+
         //</editor-fold>
         //</editor-fold>
 
@@ -107,7 +125,6 @@ public class Servidor extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Servidor().setVisible(true);
             }
         });
     }
@@ -115,11 +132,7 @@ public class Servidor extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField tfServidor;
+    private static javax.swing.JTextField tfServidor;
     // End of variables declaration//GEN-END:variables
 
-
-
-    
-    
 }

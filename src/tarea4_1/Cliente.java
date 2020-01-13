@@ -17,7 +17,7 @@ public class Cliente extends javax.swing.JFrame implements Runnable{
 
     Socket socket;
     ServerSocket server;
-    int puerto = 2000;
+    int puerto = 1500;
     DataOutputStream salida;
     DataInputStream entrada;
 
@@ -113,7 +113,7 @@ public class Cliente extends javax.swing.JFrame implements Runnable{
         
        
             try {
-            socket = new Socket("192.168.56.1", puerto);
+            socket = new Socket("localhost", puerto);
             salida = new DataOutputStream(socket.getOutputStream());
             entrada = new DataInputStream(socket.getInputStream());
             salida.writeUTF(tf1.getText());
@@ -182,6 +182,5 @@ public class Cliente extends javax.swing.JFrame implements Runnable{
 
     @Override
     public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
